@@ -19,7 +19,10 @@ from models.flight import Flight  # noqa
 
 @app.route("/")
 def home():
-    return "home page"
+    username = request.cookies.get("username")
+    if not username:
+        return redirect(url_for("login"))
+    return redirect(url_for("flights"))
 
 
 @app.route("/login", methods=['GET', 'POST'])

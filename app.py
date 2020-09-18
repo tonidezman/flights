@@ -9,6 +9,7 @@ load_dotenv()
 app = Flask(__name__)
 e = os.environ
 app.config["SQLALCHEMY_DATABASE_URI"] = f'mysql://{e["DB_USER"]}:{e["DB_PASSWORD"]}@{e["DB_HOST"]}/{e["DB_NAME"]}'
+app.secret_key = e["APP_SECRET_KEY"]
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
 

@@ -2,6 +2,7 @@ import os
 from flask import Flask, render_template
 from flask import Flask, render_template, request, redirect, url_for, flash, make_response
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import or_
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -44,7 +45,14 @@ def logout():
 
 @app.route("/flights")
 def flights():
-    flights = Flight.query.all()
+    flights = []
+    search_query = request.args.get("search_flight")
+    if not search_query:
+        flights = Flight.query.all()
+    else:
+        search_flight = '%' + search_query + '%'
+        flights = Flight.query.filter(or_(Flight.origin_airport.ilike(
+            search_flight), Flight.destination_airport.ilike(search_flight))).all()
     return render_template("flights.html", flights=flights)
 
 

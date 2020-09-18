@@ -44,7 +44,8 @@ def logout():
 
 @app.route("/flights")
 def flights():
-    return render_template("flights.html")
+    flights = Flight.query.all()
+    return render_template("flights.html", flights=flights)
 
 
 @app.route("/flight")

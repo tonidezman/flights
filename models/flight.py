@@ -14,3 +14,7 @@ class Flight(db.Model):
     duration = db.Column(db.String(250))
     available_seats = db.Column(db.Integer())
     taken_seats = db.Column(db.Integer(), default=0)
+
+    @property
+    def is_available(self):
+        return self.taken_seats < self.available_seats

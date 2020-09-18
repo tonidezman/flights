@@ -43,39 +43,44 @@
             </tr>
           </thead>
           <tbody class="bg-white divide-y divide-gray-200">
-            <tr>
-              <td
-                class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-500"
-              >
-                SFO
-              </td>
-              <td
-                class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-500"
-              >
-                DEN
-              </td>
-              </td>
-              <td
-                class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-500"
-              >
-                70/3
-              </td>
-              <td class="px-6 py-4 whitespace-no-wrap">
-                <span
-                  class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800"
+            {% for flight in flights %}
+              <tr>
+                <td
+                  class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-500"
                 >
-                  Available
-                </span>
-              <td
-                class="px-6 py-4 whitespace-no-wrap text-right text-sm leading-5 font-medium"
-              >
-                <a href="#" class="text-indigo-600 hover:text-indigo-900"
-                  >Book a Flight</a
+                  {{ flight.origin_airport }}
+                </td>
+                <td
+                  class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-500"
                 >
-              </td>
-            </tr>
-
-            <!-- More rows... -->
+                  {{ flight.destination_airport }}
+                </td>
+                </td>
+                <td
+                  class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-500"
+                >
+                  {{flight.available_seats}}/{{flight.taken_seats}}
+                </td>
+                <td class="px-6 py-4 whitespace-no-wrap">
+                  {% set color = 'green' if flight.is_available else 'red' %}
+                  <span
+                    class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-{{color}}-100 text-{{color}}-800"
+                  >
+                    {% if flight.is_available %}
+                      Available
+                    {% else %}
+                      Sold Out
+                    {% endif %}
+                  </span>
+                <td
+                  class="px-6 py-4 whitespace-no-wrap text-right text-sm leading-5 font-medium"
+                >
+                  <a href="#" class="text-indigo-600 hover:text-indigo-900"
+                    >Book a Flight</a
+                  >
+                </td>
+              </tr>
+            {% endfor %}
           </tbody>
         </table>
       </div>

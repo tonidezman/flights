@@ -57,7 +57,24 @@ def flights():
     return render_template("flights.html", flights=flights)
 
 
-@app.route("/flight")
-def flight():
-    svg = "./static/plane.svg"
-    return render_template("flight.html", svg=svg)
+@app.route("/flight/<int:id>", methods=['GET', 'POST'])
+def flight(id):
+    flight = Flight.query.get(id)
+
+    if request.method == "GET":
+        return render_template('flight.html', flight=flight)
+
+    requested_seats = int(request.form["flight_seats"])
+    if requested_seats <= 0:
+        flash({'title': 'Error',
+               'body': 'You need to choose 1 or more seats'}, "red")
+        return render_template("flight.html", flight=flight)
+
+    if (flight.seats_left - requested_seats) >= 0:
+        flight.taken_seats += requested_seats
+        db.session.commit()
+        flash({'title': 'Success!', 'body': 'You have done it!'}, "green")
+    else:
+        flash({'title': f'Seats left are smaller than what you have requested',
+               'body': f'You have requested for {requested_seats} seats'}, "red")
+    return redirect(url_for("flight", id=id))

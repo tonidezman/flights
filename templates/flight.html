@@ -3,7 +3,7 @@
   <div class="px-4 py-5 border-b border-gray-200 sm:px-6">
     <h3 class="text-lg leading-6 font-medium text-gray-900">Flight</h3>
     <p class="mt-1 max-w-2xl text-sm leading-5 text-gray-500">
-      from SFO to DEN
+      from {{flight.origin_airport}} to {{flight.destination_airport}}
     </p>
   </div>
   <div>
@@ -11,52 +11,58 @@
       <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
         <dt class="text-sm leading-5 font-medium text-gray-500">Status</dt>
         <dd class="mt-1 text-sm leading-5 text-gray-900 sm:mt-0 sm:col-span-2">
-          70/3
+          {{flight.available_seats}}/{{flight.taken_seats}} {% set color =
+          'green' if flight.is_available else 'red' %}
           <span
-            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800"
-            >Available</span
+            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-{{color}}-100 text-{{color}}-800"
           >
+            {% if flight.is_available %} Available {% else %} Sold Out {% endif
+            %}
+          </span>
         </dd>
       </div>
       <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
         <dt class="text-sm leading-5 font-medium text-gray-500">Carrier</dt>
         <dd class="mt-1 text-sm leading-5 text-gray-900 sm:mt-0 sm:col-span-2">
-          SpeedyAir
+          {{flight.carrier}}
         </dd>
       </div>
       <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
         <dt class="text-sm leading-5 font-medium text-gray-500">Duration</dt>
         <dd class="mt-1 text-sm leading-5 text-gray-900 sm:mt-0 sm:col-span-2">
-          4h 30m
+          {{flight.duration}}
         </dd>
       </div>
       <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
         <dt class="text-sm leading-5 font-medium text-gray-500">day</dt>
         <dd class="mt-1 text-sm leading-5 text-gray-900 sm:mt-0 sm:col-span-2">
-          Sun
+          {{flight.day}}
         </dd>
       </div>
       <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
         <dt class="text-sm leading-5 font-medium text-gray-500">Time</dt>
         <dd class="mt-1 text-sm leading-5 text-gray-900 sm:mt-0 sm:col-span-2">
-          12:30
+          {{flight.time}}
         </dd>
       </div>
       <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
         <dt class="text-sm leading-5 font-medium text-gray-500">Price</dt>
         <dd class="mt-1 text-sm leading-5 text-gray-900 sm:mt-0 sm:col-span-2">
-          400.00 ‎€
+          {{flight.price}}.00 ‎€
         </dd>
       </div>
       <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
         <dt class="text-sm leading-5 font-medium text-gray-500"></dt>
         <dd class="mt-1 text-sm leading-5 text-gray-900 sm:mt-0 sm:col-span-2">
-          <form class="mt-4 sm:flex sm:max-w-md">
+          <form
+            action="{{url_for('flight', id=flight.id)}}"
+            method="POST"
+            class="mt-4 sm:flex sm:max-w-md"
+          >
             <input
-              aria-label="Email address"
+              name="flight_seats"
+              aria-label="reserve flights"
               type="number"
-              min="1"
-              max="2"
               required
               class="appearance-none w-full px-5 py-3 border border-gray-300 text-base leading-6 rounded-md text-gray-900 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:border-blue-300 focus:shadow-outline transition duration-150 ease-in-out"
               placeholder="Number of seats"
@@ -77,7 +83,12 @@
   </div>
 </div>
 <div class="my-4 bg-white">
-  <img class="opacity-25 mx-auto my-2" src="{{svg}}" alt="" width="150" />
+  <img
+    class="opacity-25 mx-auto my-2"
+    src="/static/plane.svg"
+    alt=""
+    width="150"
+  />
 </div>
 
 {% endblock content %}

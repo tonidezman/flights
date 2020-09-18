@@ -75,9 +75,10 @@
                 <td
                   class="px-6 py-4 whitespace-no-wrap text-right text-sm leading-5 font-medium"
                 >
-                  <a href="#" class="text-indigo-600 hover:text-indigo-900"
-                    >Book a Flight</a
-                  >
+                  {% if flight.is_available %}
+                    <a href="/flight/{{flight.id}}" class="text-indigo-600 hover:text-indigo-900"
+                      >Book a Flight</a>
+                  {% endif %}
                 </td>
               </tr>
             {% endfor %}

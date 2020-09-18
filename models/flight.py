@@ -18,3 +18,7 @@ class Flight(db.Model):
     @property
     def is_available(self):
         return self.taken_seats < self.available_seats
+
+    @property
+    def seats_left(self):
+        return self.available_seats - self.taken_seats

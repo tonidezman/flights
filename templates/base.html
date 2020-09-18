@@ -10,6 +10,16 @@
     <title>{% block title %}{% endblock %} Flights</title>
   </head>
   <body>
+    {% for color, message in get_flashed_messages(with_categories=True) %}
+    <div
+      class="text-center bg-{{color}}-100 border-t border-b border-{{color}}-500 text-{{color}}-700 px-4 py-3"
+      role="alert"
+    >
+      <p class="font-bold">{{ message['title']}}</p>
+      <p class="text-sm">{{ message['body'] }}</p>
+    </div>
+    {% endfor %}
+
     <div class="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       {% block content %} {% endblock %}
     </div>
